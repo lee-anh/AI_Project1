@@ -23,7 +23,7 @@ class ProblemGenerator {
   int numberOfProblems;
   string outputFileName;
 
-  vector<string> createSequence();
+  vector<int> createSequence();
 };
 
 #endif

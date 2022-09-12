@@ -1,5 +1,6 @@
 #include "ProblemGenerator.h"
 
+/// @brief Default Constructor
 ProblemGenerator::ProblemGenerator() {
   edgeSize = 2;
   numberOfProblems = 1;
@@ -7,41 +8,47 @@ ProblemGenerator::ProblemGenerator() {
 }
 
 // should we set a maximum number of problems that the user can input?
+
+/// @brief Constructor
+/// @param edgeSize puzzle dimension
+/// @param numberOfProblems to generate
+/// @param outputFileName file to create/write to
 ProblemGenerator::ProblemGenerator(int edgeSize, int numberOfProblems, string outputFileName) {
   this->edgeSize = edgeSize;
   this->numberOfProblems = numberOfProblems;
   this->outputFileName = outputFileName;
 }
 
+/// @brief generate puzzles and write to file
 void ProblemGenerator::generate() {
-  vector<string> toPrint = createSequence();
-
-  // write to a file
   ofstream myFile;
+  myFile.open("./problems/" + outputFileName);
 
-  myFile.open(outputFileName);
+  myFile << edgeSize << " " << numberOfProblems << endl;
 
-  // print out edgeSize once
-  myFile << edgeSize << endl;
-
-  // print out all of the tiles
-  for (int i = 0; i < (int)toPrint.size(); i++) {
-    myFile << toPrint.at(i) << " ";
-    if (i != 0 && (i - 1 % edgeSize == 0)) {
-      myFile << endl;
+  // for how many puzzles you want to generate
+  for (int i = 0; i < numberOfProblems; i++) {
+    // print out all of the tiles
+    vector<int> toPrint = createSequence();
+    for (int j = 0; j < (int)toPrint.size(); j++) {
+      myFile << toPrint.at(j) << " ";
     }
+    myFile << endl;
   }
+
   myFile.close();
 }
 
-vector<string> ProblemGenerator::createSequence() {
-  vector<string> toReturn;
+/// @brief create the numbers and randomize the sequence
+/// @return randomized sequence
+vector<int> ProblemGenerator::createSequence() {
+  vector<int> toReturn;
   int numberOfNumbers = edgeSize * edgeSize - 1;
   for (int i = 0; i < numberOfNumbers; i++) {
-    toReturn.push_back(to_string(i + 1));
+    toReturn.push_back(i + 1);
   }
-  // # will denote the blank space until read in
-  toReturn.push_back("#");
+  // -1 will denote the blank space until read in
+  toReturn.push_back(-1);
   // TODO: make sure the numbers generated are unique
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   shuffle(toReturn.begin(), toReturn.end(), default_random_engine(seed));
