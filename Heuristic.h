@@ -9,27 +9,20 @@
 using namespace std;
 class Heuristic {
  public:
-  Heuristic(int edgeSize, int heuristic);
-  int calculateHeuristic(Puzzle* puzzle);
+  static int calculateHeuristic(Puzzle* puzzle, int heuristic);
 
  private:
-  int edgeSize;
-  int heuristic;
-
-  vector<pair<int, int>> manhattanLookUp;
-
   // h1: Misplaced Tiles
-  int misplacedTiles(Puzzle* puzzle);
+  static int misplacedTiles(Puzzle* puzzle);
 
   // h2: Manhattan Distance
-  void calculateLookUpForManhattanDistance();
-  int manhattanDistance(Puzzle* puzzle);
+  static int manhattanDistance(Puzzle* puzzle);
 
   // h3:
-  int maxSort(Puzzle* puzzle);
+  static int maxSort(Puzzle* puzzle);
 
   // h4:
-  int geometricDistance(Puzzle* puzzle);  // might want to return a float?
+  static int geometricDistance(Puzzle* puzzle);  // might want to return a float?
 };
 
 #endif

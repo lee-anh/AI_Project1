@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -g -Wall -std=c++20
 
-OBJS = main.o Checker.o ExperimentController.o Loader.o Puzzle.o Node.o NodeCompare.o
+OBJS = main.o Agent.o Checker.o ExperimentController.o Heuristic.o Loader.o Puzzle.o Node.o NodeCompare.o
 
 all: $(OBJS)
 	$(CC) $(CFLAGS) -o p1 *.o 
@@ -12,7 +12,7 @@ clean:
 main.o: main.cpp Loader.h 
 	$(CC) $(CFLAGS) -c main.cpp
 
-Agent.o: Agent.cpp Agent.h Node.h NodeCompare.h
+Agent.o: Agent.cpp Agent.h Checker.h Heuristic.h Node.h NodeCompare.h
 	$(CC) $(CFLAGS) -c Agent.cpp 
 
 Checker.o: Checker.cpp Checker.h
@@ -22,7 +22,7 @@ ExperimentController.o: ExperimentController.cpp ExperimentController.h
 	$(CC) $(CFLAGS) -c ExperimentController.cpp
 
 Heuristic.o: Heuristic.cpp Heuristic.h Puzzle.h 
-	(CC) $(CFLAGS) -c Heuristic.cpp 
+	$(CC) $(CFLAGS) -c Heuristic.cpp 
 
 Loader.o: Loader.cpp Loader.h
 	$(CC) $(CFLAGS) -c Loader.cpp

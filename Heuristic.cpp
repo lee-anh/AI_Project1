@@ -1,15 +1,6 @@
 #include "Heuristic.h"
-Heuristic::Heuristic(int edgeSize, int heuristic) {
-  this->edgeSize = edgeSize;
-  this->heuristic = heuristic;
 
-  // any set up
-  if (heuristic == 2) {
-    calculateLookUpForManhattanDistance();
-  }
-}
-
-int Heuristic::calculateHeuristic(Puzzle* puzzle) {
+int Heuristic::calculateHeuristic(Puzzle* puzzle, int heuristic) {
   // do you think the order of the switch statement could matter?
   switch (heuristic) {
     case 1:
@@ -43,21 +34,15 @@ int Heuristic::misplacedTiles(Puzzle* puzzle) {
 }
 
 // h2: Manhattan Distance
-void Heuristic::calculateLookUpForManhattanDistance() {
-  // what it should be
-  for (int i = 0; i < edgeSize; i++) {
-    for (int j = 0; j < edgeSize; j++) {
-      manhattanLookUp.push_back(make_pair(i, j));
-    }
-  }
-}
 int Heuristic::manhattanDistance(Puzzle* puzzle) {
   int sum = 0;
   for (int i = 0; i < puzzle->getDimension(); i++) {
     int tileNumber = puzzle->getPuzzleArray().at(i);
-    pair<int, int> tileCoordinate = puzzle->getTwoDimensionIndexFromOneDimension(i);
-    pair<int, int> target = manhattanLookUp.at(tileNumber);
+    pair<int, int> tileCoordinate = puzzle->getTwoDimensionIndexFromOneDimension(tileNumber);
+    pair<int, int> target = puzzle->getTwoDimensionIndexFromOneDimension(i);
+
     int xDiff = abs(tileCoordinate.first - target.first);
+
     int yDiff = abs(tileCoordinate.second - target.second);
     sum += xDiff + yDiff;
   }
@@ -67,8 +52,8 @@ int Heuristic::manhattanDistance(Puzzle* puzzle) {
 // h3:
 int Heuristic::maxSort(Puzzle* puzzle) {
   // TODO: implement. pretty vague definition in project description
-
-  return 0;
+  int sum = 0;
+  return sum;
 }
 
 // h4:

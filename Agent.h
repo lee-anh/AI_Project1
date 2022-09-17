@@ -5,18 +5,21 @@
 #include <queue>
 #include <vector>
 
+#include "Checker.h"
+#include "Heuristic.h"
 #include "Node.h"
 #include "NodeCompare.h"
 
 using namespace std;
 class Agent {
  public:
-  Agent(Node* puzzleRoot);
+  Agent(Node* puzzleRoot, int heuristic);
+  // TODO:
+  void AStarSearch();
   void expand();
 
-  void AStarSearch();
-  // will print meta data and backtrace
-  void outputToLog();
+  // TODO: will print meta data and backtrace
+  void outputToLog();  // see if we can do some sort of file stream redirection
 
   int getDeepestDepth();
   int getAverageBranchingFactor();
@@ -25,18 +28,12 @@ class Agent {
  private:
   Node* root;
   Node* current;
-  // where do we plug in the heuristic?
-  // where do we plug in the checker?
-
-  // do we really want to compute these
-  // or can we just have a running total and then take care of it there
-
   int deepestDepth;
+  int heuristic;
   int sumBranchingFactor;
   int sumFrontierSize;
   int totalNumberOfNodes;
-
-  // need to make a priority_queue which has Nodes for comparator
+  int totalNumberOfParentNodes;
   priority_queue<Node*, vector<Node*>, NodeCompare> pq;
 };
 

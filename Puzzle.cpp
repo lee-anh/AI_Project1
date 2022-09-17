@@ -91,7 +91,7 @@ int Puzzle::getOneDimensionIndexFromTwoDimension(int x, int y) {
 
 pair<int, int> Puzzle::getTwoDimensionIndex(int tileNumber) {
   int one = getOneDimensionIndex(tileNumber);
-  getTwoDimensionIndexFromOneDimension(one);
+  return getTwoDimensionIndexFromOneDimension(one);
 }
 
 pair<int, int> Puzzle::getTwoDimensionIndexFromOneDimension(int oneDimensionIndex) {
