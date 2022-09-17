@@ -22,7 +22,7 @@ ProblemGenerator::ProblemGenerator(int edgeSize, int numberOfProblems, string ou
 /// @brief generate puzzles and write to file
 void ProblemGenerator::generate() {
   ofstream myFile;
-  myFile.open("./problems/" + outputFileName);
+  myFile.open("./" + outputFileName);
 
   myFile << edgeSize << " " << numberOfProblems << endl;
 

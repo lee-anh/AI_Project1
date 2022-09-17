@@ -14,33 +14,28 @@ Loader::Loader(string targetFileName) {
   readInMetaData();
 }
 
-vector<vector<int>> Loader::getProblem() {
-  // TODO: read in the next problem
-  vector<vector<int>> toReturn;
+int Loader::getEdgeSize() {
+  return edgeSize;
+}
+
+vector<int> Loader::getProblem() {
+  vector<int> toReturn;
   if (myFile.is_open()) {
     string line;
     getline(myFile, line);
     stringstream lineStream(line);
+    int dimension = edgeSize * edgeSize;
 
-    for (int i = 0; i < edgeSize; i++) {
-      vector<int> temp;
-      for (int j = 0; j < edgeSize; j++) {
-        int tile;
-        lineStream >> tile;
-        temp.push_back(tile);
-      }
-      toReturn.push_back(temp);
+    for (int i = 0; i < dimension; i++) {
+      int tile;
+      lineStream >> tile;
+      toReturn.push_back(tile);
+    }
+
+    for (int i = 0; i < dimension; i++) {
+      cout << toReturn[i] << " ";
     }
   }
-
-  /*
-  for (int i = 0; i < edgeSize; i++) {
-    for (int j = 0; j < edgeSize; j++) {
-      cout << toReturn[i][j] << " ";
-    }
-    cout << endl;
-  }
-  */
 
   currentProblemNumber++;
   return toReturn;

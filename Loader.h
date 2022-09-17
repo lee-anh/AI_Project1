@@ -14,7 +14,8 @@ class Loader {
   Loader();
   Loader(string targetFileName);
   // ~Loader(); // not sure if we need a destructor yet
-  vector<vector<int>> getProblem();
+  int getEdgeSize();
+  vector<int> getProblem();
   bool hasNextProblem();
 
  private:
