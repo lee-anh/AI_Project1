@@ -13,17 +13,12 @@ using namespace std;
 
 class ProblemGenerator {
  public:
-  ProblemGenerator();
-  ProblemGenerator(int edgeSize, int numberOfProblems, string outputFileName);
-  void generate();
+  static void generate(int edgeSize, int numberOfProblems, string outputFileName);
+  static void generateEveryThreePuzzle();  // Loader might have to randomize
+  static void generateEveryEightPuzzle();  // Loader might have to randomize
 
  private:
-  // instance variables
-  int edgeSize;
-  int numberOfProblems;
-  string outputFileName;
-
-  vector<int> createSequence();
+  static vector<int> createSequence(int edgeSize);
 };
 
 #endif

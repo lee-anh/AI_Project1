@@ -38,13 +38,15 @@ int Heuristic::manhattanDistance(Puzzle* puzzle) {
   int sum = 0;
   for (int i = 0; i < puzzle->getDimension(); i++) {
     int tileNumber = puzzle->getPuzzleArray().at(i);
-    pair<int, int> tileCoordinate = puzzle->getTwoDimensionIndexFromOneDimension(tileNumber);
-    pair<int, int> target = puzzle->getTwoDimensionIndexFromOneDimension(i);
+    if (tileNumber != -1) {  // don't count the blank tile
+      pair<int, int> tileCoordinate = puzzle->getTwoDimensionIndexFromOneDimension(tileNumber);
+      pair<int, int> target = puzzle->getTwoDimensionIndexFromOneDimension(i);
 
-    int xDiff = abs(tileCoordinate.first - target.first);
+      int xDiff = abs(tileCoordinate.first - target.first);
 
-    int yDiff = abs(tileCoordinate.second - target.second);
-    sum += xDiff + yDiff;
+      int yDiff = abs(tileCoordinate.second - target.second);
+      sum += xDiff + yDiff;
+    }
   }
   return sum;
 }

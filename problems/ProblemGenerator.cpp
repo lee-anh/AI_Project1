@@ -1,26 +1,7 @@
 #include "ProblemGenerator.h"
 
-/// @brief Default Constructor
-ProblemGenerator::ProblemGenerator() {
-  edgeSize = 2;
-  numberOfProblems = 1;
-  outputFileName = "test.txt";
-}
-
-// should we set a maximum number of problems that the user can input?
-
-/// @brief Constructor
-/// @param edgeSize puzzle dimension
-/// @param numberOfProblems to generate
-/// @param outputFileName file to create/write to
-ProblemGenerator::ProblemGenerator(int edgeSize, int numberOfProblems, string outputFileName) {
-  this->edgeSize = edgeSize;
-  this->numberOfProblems = numberOfProblems;
-  this->outputFileName = outputFileName;
-}
-
 /// @brief generate puzzles and write to file
-void ProblemGenerator::generate() {
+void ProblemGenerator::generate(int edgeSize, int numberOfProblems, string outputFileName) {
   ofstream myFile;
   myFile.open("./" + outputFileName);
 
@@ -29,7 +10,7 @@ void ProblemGenerator::generate() {
   // for how many puzzles you want to generate
   for (int i = 0; i < numberOfProblems; i++) {
     // print out all of the tiles
-    vector<int> toPrint = createSequence();
+    vector<int> toPrint = createSequence(edgeSize);
     for (int j = 0; j < (int)toPrint.size(); j++) {
       myFile << toPrint.at(j) << " ";
     }
@@ -39,9 +20,32 @@ void ProblemGenerator::generate() {
   myFile.close();
 }
 
+void ProblemGenerator::generateEveryThreePuzzle() {
+  //  4! = 24
+  ofstream myFile;
+  myFile.open("./every_three_puzzle.txt");
+  int arr[] = {-1, 1, 2, 3};
+  do {
+    myFile << arr[0] << " " << arr[1] << " "
+           << arr[2] << " " << arr[3] << endl;
+  } while (next_permutation(arr, arr + 4));
+}
+
+void ProblemGenerator::generateEveryEightPuzzle() {
+  //  8! = 362880
+  ofstream myFile;
+  myFile.open("./every_eight_puzzle.txt");
+  int arr[] = {-1, 1, 2, 3, 4, 5, 6, 7, 8};
+  do {
+    myFile << arr[0] << " " << arr[1] << " " << arr[2] << " "
+           << arr[3] << " " << arr[4] << " " << arr[5] << " "
+           << arr[6] << " " << arr[7] << " " << arr[8] << endl;
+  } while (next_permutation(arr, arr + 9));
+}
+
 /// @brief create the numbers and randomize the sequence
 /// @return randomized sequence
-vector<int> ProblemGenerator::createSequence() {
+vector<int> ProblemGenerator::createSequence(int edgeSize) {
   vector<int> toReturn;
   int numberOfNumbers = edgeSize * edgeSize - 1;
   for (int i = 0; i < numberOfNumbers; i++) {
@@ -54,3 +58,5 @@ vector<int> ProblemGenerator::createSequence() {
   shuffle(toReturn.begin(), toReturn.end(), default_random_engine(seed));
   return toReturn;
 }
+
+// maybe from here we should select the problems

@@ -18,6 +18,7 @@ Puzzle::Puzzle(vector<int> puzzleArray, int edgeSize, int emptySpaceIndex) {
 Puzzle* Puzzle::moveDown() {
   // make a copy of the vector
   vector<int> copy = puzzleArray;
+
   pair<int, int> emptyTwoDim = getTwoDimensionIndexFromOneDimension(emptySpaceIndex);
   // index to swap will be the new emptySpaceIndex
   int indexToSwap = getOneDimensionIndexFromTwoDimension(emptyTwoDim.first + 1, emptyTwoDim.second);
@@ -99,36 +100,60 @@ pair<int, int> Puzzle::getTwoDimensionIndexFromOneDimension(int oneDimensionInde
   return (make_pair(res.quot, res.rem));
 }
 
-bool Puzzle::canMoveDown() {
+bool Puzzle::canMoveDown(int previousAction) {
+  if (previousAction == 4) {
+    return false;
+  }
   // if the the x is less than edgeSize - 1
   if (getTwoDimensionIndexFromOneDimension(emptySpaceIndex).first < edgeSize - 1) {
     return true;
   }
   return false;
 }
-bool Puzzle::canMoveLeft() {
+bool Puzzle::canMoveLeft(int previousAction) {
+  if (previousAction == 3) {
+    return false;
+  }
   // if the y size is greater than 0
   if (getTwoDimensionIndexFromOneDimension(emptySpaceIndex).second > 0) {
     return true;
   }
   return false;
 }
-bool Puzzle::canMoveRight() {
+bool Puzzle::canMoveRight(int previousAction) {
+  if (previousAction == 2) {
+    return false;
+  }
   // if the y size is less than edgeSize - 1
   if (getTwoDimensionIndexFromOneDimension(emptySpaceIndex).second < edgeSize - 1) {
     return true;
   }
   return false;
 }
-bool Puzzle::canMoveUp() {
+bool Puzzle::canMoveUp(int previousAction) {
+  if (previousAction == 1) {
+    return false;
+  }
   // if the x is greater than 0
+
   if (getTwoDimensionIndexFromOneDimension(emptySpaceIndex).first > 0) {
     return true;
   }
   return false;
 }
 
-void Puzzle::swap(int indexA, int indexB, vector<int> toSwap) {
+void Puzzle::printPuzzle() {
+  int counter = 0;
+  for (int i = 0; i < edgeSize; i++) {
+    for (int j = 0; j < edgeSize; j++) {
+      cout << puzzleArray[counter] << " ";
+      counter++;
+    }
+    cout << endl;
+  }
+}
+
+void Puzzle::swap(int indexA, int indexB, vector<int>& toSwap) {
   int temp = toSwap[indexA];
   toSwap[indexA] = toSwap[indexB];
   toSwap[indexB] = temp;

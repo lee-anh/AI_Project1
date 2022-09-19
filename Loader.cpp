@@ -32,9 +32,11 @@ vector<int> Loader::getProblem() {
       toReturn.push_back(tile);
     }
 
+    /*
     for (int i = 0; i < dimension; i++) {
       cout << toReturn[i] << " ";
     }
+    */
   }
 
   currentProblemNumber++;

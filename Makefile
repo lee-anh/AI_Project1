@@ -9,16 +9,16 @@ clean:
 	rm ./p1
 	rm *.o 
 
-main.o: main.cpp Loader.h 
+main.o: main.cpp ExperimentController.h 
 	$(CC) $(CFLAGS) -c main.cpp
 
 Agent.o: Agent.cpp Agent.h Checker.h Heuristic.h Node.h NodeCompare.h
 	$(CC) $(CFLAGS) -c Agent.cpp 
 
-Checker.o: Checker.cpp Checker.h
+Checker.o: Checker.cpp Checker.h Puzzle.h
 	$(CC) $(CFLAGS) -c Checker.cpp
 
-ExperimentController.o: ExperimentController.cpp ExperimentController.h
+ExperimentController.o: ExperimentController.cpp ExperimentController.h Agent.h Loader.h
 	$(CC) $(CFLAGS) -c ExperimentController.cpp
 
 Heuristic.o: Heuristic.cpp Heuristic.h Puzzle.h 

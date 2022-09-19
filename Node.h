@@ -10,19 +10,16 @@ using namespace std;
 
 class Node {
  public:
-  Node(Puzzle* state, Node* parentNode, int action, int cost, int depth);
+  Node(Puzzle* state, Node* parentNode, int action, int cost, int depth, int heuristicEstimate);
 
   Puzzle* getState();
   Node* getParentNode();
   int getAction();
   int getCost();
   int getDepth();
+  int getHeuristicEstimate();
 
-  void setState(Puzzle* state);
-  void setParentNode(Node* parent);
-  void setAction(int action);
-  void setCost(int cost);
-  void setDepth(int depth);
+  void printNode();
 
  private:
   Puzzle* state;
@@ -30,6 +27,7 @@ class Node {
   int action;
   int cost;
   int depth;
+  int heuristicEstimate;
 };
 
 #endif

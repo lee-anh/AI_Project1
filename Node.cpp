@@ -1,11 +1,12 @@
 #include "Node.h"
 
-Node::Node(Puzzle* state, Node* parentNode, int action, int cost, int depth) {
+Node::Node(Puzzle* state, Node* parentNode, int action, int cost, int depth, int heuristicEstimate) {
   this->state = state;
   this->parentNode = parentNode;
   this->action = action;
   this->cost = cost;
   this->depth = depth;
+  this->heuristicEstimate = heuristicEstimate;
 }
 
 Puzzle* Node::getState() {
@@ -23,19 +24,16 @@ int Node::getCost() {
 int Node::getDepth() {
   return depth;
 }
+int Node::getHeuristicEstimate() {
+  return heuristicEstimate;
+}
 
-void Node::setState(Puzzle* state) {
-  this->state = state;
-}
-void Node::setParentNode(Node* parent) {
-  parentNode = parent;
-}
-void Node::setAction(int action) {
-  this->action = action;
-}
-void Node::setCost(int cost) {
-  this->cost = cost;
-}
-void Node::setDepth(int depth) {
-  this->depth = depth;
+void Node::printNode() {
+  cout << "State:" << endl;
+  state->printPuzzle();
+  cout << "Action: " << action << endl
+       << "Cost: " << cost << endl
+       << "Depth: " << depth << endl
+       << "h(n): " << heuristicEstimate << endl
+       << endl;
 }

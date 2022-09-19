@@ -8,11 +8,23 @@ Agent::Agent(Node* puzzleRoot, int heuristic) {
   sumBranchingFactor = 0;
   sumFrontierSize = 0;
   totalNumberOfNodes = 1;
-  totalNumberOfParentNodes = 0;
+  totalNumberOfParentNodes = 1;
   pq.push(root);
 }
 
-void Agent::AStarSearch() {
+Node* Agent::AStarSearch() {
+  while (!pq.empty()) {
+    sumFrontierSize += pq.size();
+    current = pq.top();
+    pq.pop();
+    if (Checker::isGoalState(current->getState())) {
+      // TODO:  have some sort of output to the log file?
+      outputToLog(current);
+      return current;
+    }
+    expand();
+  }
+  return NULL;
 }
 
 void Agent::expand() {
@@ -20,42 +32,59 @@ void Agent::expand() {
   totalNumberOfParentNodes++;
 
   Puzzle* currentState = current->getState();
-
-  if (currentState->canMoveDown()) {
+  int previousAction = current->getAction();
+  if (currentState->canMoveDown(previousAction)) {
     Puzzle* down = currentState->moveDown();
     numberOfChildren++;
-    Node* toPush = new Node(down, current, 1, current->getDepth() + Heuristic::calculateHeuristic(down, heuristic), current->getDepth() + 1);
-    pq.push(toPush);
+    addChild(down, 1);
   }
-  if (currentState->canMoveLeft()) {
+  if (currentState->canMoveLeft(previousAction)) {
     Puzzle* left = currentState->moveLeft();
     numberOfChildren++;
-    Node* toPush = new Node(left, current, 2, current->getDepth() + Heuristic::calculateHeuristic(left, heuristic), current->getDepth() + 1);
-    pq.push(toPush);
+    addChild(left, 2);
   }
-  if (currentState->canMoveRight()) {
+  if (currentState->canMoveRight(previousAction)) {
     Puzzle* right = currentState->moveRight();
     numberOfChildren++;
-    Node* toPush = new Node(right, current, 3, current->getDepth() + Heuristic::calculateHeuristic(right, heuristic), current->getDepth() + 1);
-    pq.push(toPush);
+    addChild(right, 3);
   }
-  if (currentState->canMoveUp()) {
+  if (currentState->canMoveUp(previousAction)) {
     Puzzle* up = currentState->moveUp();
     numberOfChildren++;
-    Node* toPush = new Node(up, current, 4, current->getDepth() + Heuristic::calculateHeuristic(up, heuristic), current->getDepth() + 1);
-    pq.push(toPush);
+    addChild(up, 4);
   }
   sumBranchingFactor += numberOfChildren;
+  totalNumberOfNodes += numberOfChildren;
+}
+
+void Agent::outputToLog(Node* solution) {
+  cout << "Total nodes: " << totalNumberOfNodes << endl
+       << "Deepest depth: " << deepestDepth << endl
+       << "Average branching factor: " << getAverageBranchingFactor() << endl
+       << "Average frontier size: " << getAverageFrontierSize() << endl
+       << "Solution node: " << endl;
+  solution->printNode();
 }
 
 int Agent::getDeepestDepth() {
   return deepestDepth;
 }
 
-int Agent::getAverageBranchingFactor() {
-  return sumBranchingFactor / totalNumberOfParentNodes;
+float Agent::getAverageBranchingFactor() {
+  return sumBranchingFactor * 1.0 / totalNumberOfParentNodes;
 }
 
-int Agent::getAverageFrontierSize() {
-  return sumFrontierSize / totalNumberOfParentNodes;
+float Agent::getAverageFrontierSize() {
+  return sumFrontierSize * 1.0 / totalNumberOfParentNodes;
+}
+
+void Agent::addChild(Puzzle* puzzle, int move) {
+  int heuristicEstimate = Heuristic::calculateHeuristic(puzzle, heuristic);
+  int depth = current->getDepth() + 1;
+  Node* toPush = new Node(puzzle, current, move, depth + heuristicEstimate, depth, heuristicEstimate);
+  pq.push(toPush);
+  toPush->printNode();
+  if (depth > deepestDepth) {
+    deepestDepth = depth;
+  }
 }

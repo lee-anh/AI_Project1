@@ -12,10 +12,10 @@ class Puzzle {
   Puzzle(vector<int> puzzleArray, int edgeSize);
   Puzzle(vector<int> puzzleArray, int edgeSize, int emptySpaceIndex);
 
-  bool canMoveDown();
-  bool canMoveLeft();
-  bool canMoveRight();
-  bool canMoveUp();
+  bool canMoveDown(int previousAction);
+  bool canMoveLeft(int previousAction);
+  bool canMoveRight(int previousAction);
+  bool canMoveUp(int previousAction);
 
   Puzzle* moveDown();
   Puzzle* moveLeft();
@@ -31,7 +31,10 @@ class Puzzle {
   int getOneDimensionIndexFromTwoDimension(int x, int y);
   pair<int, int> getTwoDimensionIndex(int tileNumber);
   pair<int, int> getTwoDimensionIndexFromOneDimension(int oneDimensionIndex);
-  void swap(int indexA, int indexB, vector<int> toSwap);
+
+  void printPuzzle();
+
+  void swap(int indexA, int indexB, vector<int>& toSwap);
 
  private:
   vector<int> puzzleArray;
