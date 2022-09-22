@@ -1,6 +1,6 @@
 #include "Node.h"
 
-Node::Node(Puzzle* state, Node* parentNode, int action, int cost, int depth, int heuristicEstimate) {
+Node::Node(Puzzle* state, Node* parentNode, int action, float cost, int depth, int heuristicEstimate) {
   this->state = state;
   this->parentNode = parentNode;
   this->action = action;
@@ -18,7 +18,7 @@ Node* Node::getParentNode() {
 int Node::getAction() {
   return action;
 }
-int Node::getCost() {
+float Node::getCost() {
   return cost;
 }
 int Node::getDepth() {

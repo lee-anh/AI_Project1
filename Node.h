@@ -10,12 +10,12 @@ using namespace std;
 
 class Node {
  public:
-  Node(Puzzle* state, Node* parentNode, int action, int cost, int depth, int heuristicEstimate);
+  Node(Puzzle* state, Node* parentNode, int action, float cost, int depth, int heuristicEstimate);
 
   Puzzle* getState();
   Node* getParentNode();
   int getAction();
-  int getCost();
+  float getCost();
   int getDepth();
   int getHeuristicEstimate();
 
@@ -25,7 +25,7 @@ class Node {
   Puzzle* state;
   Node* parentNode;
   int action;
-  int cost;
+  float cost;
   int depth;
   int heuristicEstimate;
 };

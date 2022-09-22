@@ -1,6 +1,7 @@
 #ifndef HEURISTIC
 #define HEURISTIC
 
+#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -9,20 +10,20 @@
 using namespace std;
 class Heuristic {
  public:
-  static int calculateHeuristic(Puzzle* puzzle, int heuristic);
+  static float calculateHeuristic(Puzzle* puzzle, int heuristic);
 
  private:
   // h1: Misplaced Tiles
-  static int misplacedTiles(Puzzle* puzzle);
+  static float misplacedTiles(Puzzle* puzzle);
 
   // h2: Manhattan Distance
-  static int manhattanDistance(Puzzle* puzzle);
+  static float manhattanDistance(Puzzle* puzzle);
 
   // h3:
-  static int maxSort(Puzzle* puzzle);
+  static float maxSort(Puzzle* puzzle);
 
   // h4:
-  static int geometricDistance(Puzzle* puzzle);  // might want to return a float?
+  static float geometricDistance(Puzzle* puzzle);  // might want to return a float?
 };
 
 #endif

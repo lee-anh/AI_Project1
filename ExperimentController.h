@@ -7,13 +7,12 @@
 
 #include "Agent.h"
 #include "Loader.h"
-// timing mechanism
-// and other performance measures are going to go here
+
 using namespace std;
 
 class ExperimentController {
  public:
-  static void runExperiment(string file, int heuristic);
-};  // namespace std;
+  static void runExperiment(string inputFile, int heuristic, string outputFile);
+};
 
 #endif

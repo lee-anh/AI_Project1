@@ -1,30 +1,55 @@
 #include "Agent.h"
 
-Agent::Agent(Node* puzzleRoot, int heuristic) {
+Agent::Agent(Node* puzzleRoot, int heuristic, string outputFileName) {
   root = puzzleRoot;
   current = root;
   deepestDepth = 0;
   this->heuristic = heuristic;
+  this->outputFileName = outputFileName;
   sumBranchingFactor = 0;
   sumFrontierSize = 0;
+  timeToSolve = 0;
   totalNumberOfNodes = 1;
   totalNumberOfParentNodes = 1;
   pq.push(root);
+  reached = new ReachedTree();
 }
 
 Node* Agent::AStarSearch() {
+  auto start = chrono::high_resolution_clock::now();
   while (!pq.empty()) {
     sumFrontierSize += pq.size();
     current = pq.top();
     pq.pop();
     if (Checker::isGoalState(current->getState())) {
-      // TODO:  have some sort of output to the log file?
-      outputToLog(current);
+      auto stop = chrono::high_resolution_clock::now();
+      auto duration = duration_cast<chrono::microseconds>(stop - start);
+      timeToSolve = duration.count();
+      outputToLog(current, true);
       return current;
     }
     expand();
   }
+  auto stop = chrono::high_resolution_clock::now();
+  auto duration = duration_cast<chrono::microseconds>(stop - start);
+  timeToSolve = duration.count();
+  outputToLog(current, false);
   return NULL;
+}
+
+void Agent::addChild(Puzzle* puzzle, int move) {
+  // don't add the node if we've seen this state before
+  if (reached->isReached(puzzle->getPuzzleArray())) {
+    return;
+  }
+  int heuristicEstimate = Heuristic::calculateHeuristic(puzzle, heuristic);
+  int depth = current->getDepth() + 1;
+  Node* toPush = new Node(puzzle, current, move, depth + heuristicEstimate, depth, heuristicEstimate);
+  pq.push(toPush);
+  // toPush->printNode();
+  if (depth > deepestDepth) {
+    deepestDepth = depth;
+  }
 }
 
 void Agent::expand() {
@@ -57,15 +82,6 @@ void Agent::expand() {
   totalNumberOfNodes += numberOfChildren;
 }
 
-void Agent::outputToLog(Node* solution) {
-  cout << "Total nodes: " << totalNumberOfNodes << endl
-       << "Deepest depth: " << deepestDepth << endl
-       << "Average branching factor: " << getAverageBranchingFactor() << endl
-       << "Average frontier size: " << getAverageFrontierSize() << endl
-       << "Solution node: " << endl;
-  solution->printNode();
-}
-
 int Agent::getDeepestDepth() {
   return deepestDepth;
 }
@@ -78,13 +94,11 @@ float Agent::getAverageFrontierSize() {
   return sumFrontierSize * 1.0 / totalNumberOfParentNodes;
 }
 
-void Agent::addChild(Puzzle* puzzle, int move) {
-  int heuristicEstimate = Heuristic::calculateHeuristic(puzzle, heuristic);
-  int depth = current->getDepth() + 1;
-  Node* toPush = new Node(puzzle, current, move, depth + heuristicEstimate, depth, heuristicEstimate);
-  pq.push(toPush);
-  toPush->printNode();
-  if (depth > deepestDepth) {
-    deepestDepth = depth;
-  }
+// TODO: need a backtrace of the solution?
+void Agent::outputToLog(Node* solution, bool solved) {
+  ofstream myFile;
+  myFile.open(outputFileName, ios_base::app);
+  myFile << timeToSolve << "\t" << getAverageBranchingFactor() << "\t"
+         << getAverageFrontierSize() << "\t" << totalNumberOfNodes << "\t" << solved << endl;
+  myFile.close();
 }

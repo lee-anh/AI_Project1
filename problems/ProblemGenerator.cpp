@@ -60,3 +60,4 @@ vector<int> ProblemGenerator::createSequence(int edgeSize) {
 }
 
 // maybe from here we should select the problems
+// we need a way to check for old states as well
