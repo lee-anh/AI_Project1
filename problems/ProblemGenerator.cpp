@@ -1,6 +1,6 @@
 #include "ProblemGenerator.h"
 
-/// @brief generate puzzles and write to file
+/// @brief generate puzzles and write to file, duplicates allowed
 void ProblemGenerator::generate(int edgeSize, int numberOfProblems, string outputFileName) {
   ofstream myFile;
   myFile.open("./" + outputFileName);
@@ -20,10 +20,12 @@ void ProblemGenerator::generate(int edgeSize, int numberOfProblems, string outpu
   myFile.close();
 }
 
+/// @brief generate every permutation of a three puzzle
 void ProblemGenerator::generateEveryThreePuzzle() {
   //  4! = 24
   ofstream myFile;
   myFile.open("./every_three_puzzle.txt");
+  myFile << 2 << " " << 24 << endl;
   int arr[] = {-1, 1, 2, 3};
   do {
     myFile << arr[0] << " " << arr[1] << " "
@@ -31,6 +33,7 @@ void ProblemGenerator::generateEveryThreePuzzle() {
   } while (next_permutation(arr, arr + 4));
 }
 
+/// @brief generate every permutation of an eight puzzle
 void ProblemGenerator::generateEveryEightPuzzle() {
   //  8! = 362880
   ofstream myFile;
@@ -58,6 +61,3 @@ vector<int> ProblemGenerator::createSequence(int edgeSize) {
   shuffle(toReturn.begin(), toReturn.end(), default_random_engine(seed));
   return toReturn;
 }
-
-// maybe from here we should select the problems
-// we need a way to check for old states as well

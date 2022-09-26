@@ -4,7 +4,9 @@ ReachedTree::ReachedTree() {
   root = new ReachedNode(0);
 }
 
-// have to add in the rest of the vector as well
+/// @brief check to see if the puzzleArray has been reached before
+  /// @param puzzleArray
+  /// @return 
 bool ReachedTree::isReached(vector<int> puzzleArray) {
   ReachedNode* current = root;
   // I guess I am going with the iterative approach
@@ -22,7 +24,10 @@ bool ReachedTree::isReached(vector<int> puzzleArray) {
   return true;
 }
 
-// returns the index of the child, -1 if there is no child
+/// @brief check to see if a certain node has a child with a certain number
+  /// @param current node to check children of 
+  /// @param numberToCheck number we're looking for 
+  /// @return the index of the child, -1 if there is no child
 int ReachedTree::hasChild(ReachedNode* current, int numberToCheck) {
   for (int i = 0; i < (int)current->children.size(); i++) {
     if (current->children.at(i)->num == numberToCheck) {
@@ -32,6 +37,12 @@ int ReachedTree::hasChild(ReachedNode* current, int numberToCheck) {
   return -1;
 }
 
+
+/// @brief add the rest of the vector the tree
+  /// only used if we haven't seen this state before
+  /// @param current current node, we'll be adding children & descendants to this node 
+  /// @param arrToAdd the array to add to the tree 
+  /// @param indexToStartAt add from indexToStart at tot the end of arrToAdd
 void ReachedTree::addRestOfVectorToTree(ReachedNode* current, vector<int> arrToAdd, int indexToStartAt) {
   ReachedNode* curr = current;
   // I guess we could do recursively but that would have higher runtime

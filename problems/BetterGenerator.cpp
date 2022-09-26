@@ -1,10 +1,16 @@
 #include "BetterGenerator.h"
 
+/// @brief create an engine to generate problems form
+/// @param edgeSize
 BetterGenerator::BetterGenerator(int edgeSize) {
   this->edgeSize = edgeSize;
   dimension = edgeSize * edgeSize;
 }
 
+/// @brief generate unique, solvable problems based on the following parameters
+/// @param numberOfProblems to generate
+/// @param numberOfMisplacedTiles in the puzzle
+/// @param outputFileName
 void BetterGenerator::generate(int numberOfProblems, int numberOfMisplacedTiles, string outputFileName) {
   if (numberOfMisplacedTiles > dimension - 1) {
     cerr << "too many misplaced tiles requested." << endl;
@@ -27,27 +33,9 @@ void BetterGenerator::generate(int numberOfProblems, int numberOfMisplacedTiles,
   myFile.close();
 }
 
-/*
-int BetterGenerator::readInFromFile(int dimension, string inputFileName, ReachedTree* reached) {
-  ifstream myFile.open(inputFileName);
-  string line;
-  int count = 0;
-
-  while (getLine(cin, line)) {
-    vector<int> toCheck;
-    for (int i = 0; i < dimension; i++) {
-      int tile;
-      lineStream >> tile;
-      toCheck.push_back(tile);
-    }
-    if (reached->isReached(toCheck) == false) {
-      count++;
-    }
-  }
-  return count;
-}
-*/
-
+/// @brief create a dummy puzzle to simulate some moves and create an inital state
+/// @param numberOfMisplacedTiles number of tiles that should be out of place
+/// @return
 vector<int> BetterGenerator::createPuzzle(int numberOfMisplacedTiles) {
   // populate the puzzle array
   vector<int> puzzleArray;
@@ -64,29 +52,7 @@ vector<int> BetterGenerator::createPuzzle(int numberOfMisplacedTiles) {
   mt19937 gen(rd());
   uniform_int_distribution<int> distribution(1, 4);
 
-  // # of misplacedTiles valid swaps
-
   Puzzle p = Puzzle(puzzleArray, edgeSize);
-  // p.printPuzzle();
-
-  // some ways to optimize
-  // we would never go over right?
-  // don't undo the previous action
-  // or just ignore by plugging in 0 it's ok for now
-  // save some computation power
-  /*
-  for (int i = 0; i < numberOfMisplacedTiles; i++) {
-    // randomly generate a move 1-4 and move the tile
-    moveTile(distribution(gen), p);
-  }
-
-   // hardly ever will be triggered
-  if (numberOfMisplacedTiles == misplacedTiles(p.getPuzzleArray())) {
-    return p.getPuzzleArray();
-  }
-  if (numberOfMisplacedTiles < misplacedTiles(p.getPuzzleArray())) {
-    cerr << "too many misplaced tileS!!!" << endl;
-  }*/
 
   // keep generating until you get something that matches
   while (misplacedTiles(p.getPuzzleArray()) < numberOfMisplacedTiles) {
@@ -98,6 +64,9 @@ vector<int> BetterGenerator::createPuzzle(int numberOfMisplacedTiles) {
   return p.getPuzzleArray();
 }
 
+/// @brief utility function that counts up the number of misplaced tiles
+/// @param arr
+/// @return number of misplaced tiles
 int BetterGenerator::misplacedTiles(vector<int> arr) {
   int count = 0;
   for (int i = 0; i < (int)arr.size(); i++) {
@@ -109,7 +78,10 @@ int BetterGenerator::misplacedTiles(vector<int> arr) {
   return count - 1;
 }
 
-// ugh I feel like I might have over complicated this
+/// @brief utility function that moves the tiles on the dummy puzzle
+/// @param move
+/// @param p
+/// @return
 bool BetterGenerator::moveTile(int move, Puzzle& puzzle) {
   // cout << "Before: " << endl;
   // puzzle.printPuzzle();
@@ -147,6 +119,8 @@ bool BetterGenerator::moveTile(int move, Puzzle& puzzle) {
   return false;
 }
 
+/// @brief write the puzzle to the output file
+/// @param toWrite
 void BetterGenerator::writeToFile(vector<int> toWrite) {
   for (int n : toWrite) {
     myFile << n << " ";

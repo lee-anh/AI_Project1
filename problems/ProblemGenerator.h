@@ -13,11 +13,16 @@ using namespace std;
 
 class ProblemGenerator {
  public:
+  /// @brief generate puzzles and write to file
   static void generate(int edgeSize, int numberOfProblems, string outputFileName);
-  static void generateEveryThreePuzzle();  // Loader might have to randomize
-  static void generateEveryEightPuzzle();  // Loader might have to randomize
+  /// @brief generate every permutation of a three puzzle
+  static void generateEveryThreePuzzle();
+  /// @brief generate every permutation of an eight puzzle
+  static void generateEveryEightPuzzle();
 
  private:
+  /// @brief create the numbers and randomize the sequence
+  /// @return randomized sequence
   static vector<int> createSequence(int edgeSize);
 };
 
