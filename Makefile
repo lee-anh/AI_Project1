@@ -5,7 +5,22 @@ OBJS = main.o Agent.o Checker.o ExperimentController.o Heuristic.o Loader.o Puzz
 
 all: $(OBJS)
 	$(CC) $(CFLAGS) -o p1 *.o 
-	./p1
+
+three: $(OBJS)
+	$(CC) $(CFLAGS) -o p1 *.o 
+	./p1 2
+
+eight: $(OBJS)
+	$(CC) $(CFLAGS) -o p1 *.o 
+	./p1 3
+
+fifteen: $(OBJS)
+	$(CC) $(CFLAGS) -o p1 *.o 
+	./p1 4
+
+tests: $(OBJS)
+	$(CC) $(CFLAGS) -o p1 *.o 
+	./p1 0
 
 clean:
 	rm ./p1

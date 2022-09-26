@@ -1,7 +1,11 @@
 #include "Heuristic.h"
 
+/// @brief calculate an estimate based on a specified heuristic
+/// uses a switch to decide which heuristic to use
+/// @param puzzle puzzle to calculate a heuristic for
+/// @param heuristic to calculate
+/// @return
 float Heuristic::calculateHeuristic(Puzzle* puzzle, int heuristic) {
-  // do you think the order of the switch statement could matter?
   switch (heuristic) {
     case 1:
       return misplacedTiles(puzzle);
@@ -20,30 +24,34 @@ float Heuristic::calculateHeuristic(Puzzle* puzzle, int heuristic) {
   }
 }
 
-// h1: Misplaced Tiles
+/// @brief h1: Misplaced Tiles
+/// linearly counts up the tiles that are misplace (not including the blank)
+/// @param puzzle to estimate
+/// @return heuristic estimate
 float Heuristic::misplacedTiles(Puzzle* puzzle) {
   int count = 0;
   for (int i = 0; i < puzzle->getDimension(); i++) {
-    // actually I think this is counting them wrong
     if (puzzle->getPuzzleArray().at(i) != i) {
       count++;
     }
   }
-  // subtract 1 from the total because blank will always be out of place
+  // subtract 1 from the total because blank will always be out of place, don't count it
   return (count - 1);
 }
 
-// h2: Manhattan Distance
+/// @brief h2: Manhattan Distance
+/// linearly computes the Manhattan distance for each tile (not including the blank)
+/// and returns the sum of all the manhattan distances
+/// @param puzzle to estimate
+/// @return heuristic estimate
 float Heuristic::manhattanDistance(Puzzle* puzzle) {
   int sum = 0;
   for (int i = 0; i < puzzle->getDimension(); i++) {
     int tileNumber = puzzle->getPuzzleArray().at(i);
-    if (tileNumber != -1) {  // don't count the blank tile
+    if (tileNumber != -1) {  // don't count the blank
       pair<int, int> tileCoordinate = puzzle->getTwoDimensionIndexFromOneDimension(tileNumber);
       pair<int, int> target = puzzle->getTwoDimensionIndexFromOneDimension(i);
-
       int xDiff = abs(tileCoordinate.first - target.first);
-
       int yDiff = abs(tileCoordinate.second - target.second);
       sum += xDiff + yDiff;
     }
@@ -51,27 +59,35 @@ float Heuristic::manhattanDistance(Puzzle* puzzle) {
   return sum;
 }
 
-// h3: Euclidean Distance
+/// @brief h3: MAXSORT
+/// quadratically sorts the puzzle array and returns the total number of swaps
+/// @param puzzle to estimate
+/// @return heuristic estimate
 float Heuristic::maxSort(Puzzle* puzzle) {
-  int sum = 0;
+  int numberOfSwaps = 0;
   vector<int> puzzleArr = puzzle->getPuzzleArray();
   for (int i = (puzzle->getDimension() - 1); i >= 1; i--) {
     int max = 0;
-    for (int j = 1; j < i; j++) {
+    for (int j = 1; j <= i; j++) {
       if (puzzleArr.at(max) < puzzleArr.at(j)) {
         max = j;
       }
-      // swap
+    }
+    // swap if out of place
+    if (puzzleArr.at(max) != puzzleArr.at(i)) {
       int temp = puzzleArr.at(max);
       puzzleArr.at(max) = puzzleArr.at(i);
       puzzleArr.at(i) = temp;
+      numberOfSwaps++;
     }
   }
-
-  return sum;
+  return numberOfSwaps;
 }
 
-// h4:
+/// @brief h4: Euclidean Distance
+/// uses the distance formula, returns the sum of all the euclidean distances
+/// @param puzzle to estimate
+/// @return heuristic estimate
 float Heuristic::geometricDistance(Puzzle* puzzle) {
   float sum = 0;
   for (int i = 0; i < puzzle->getDimension(); i++) {

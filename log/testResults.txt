@@ -1,0 +1,4 @@
+MisplacedTiles :8 == 8?
+ManhattanDistance: 18 == 18?
+Swaps from maxSort: 8== 8?
+GeometricDistance: 14.5366 ~ 14.5366?

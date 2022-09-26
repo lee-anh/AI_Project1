@@ -1,12 +1,15 @@
 #include "Loader.h"
 
-// should match with default constructor for ProblemGenerator
+/// @brief default constructor
 Loader::Loader() {
   targetFileName = "test.txt";
   currentProblemNumber = 0;
   openFile();
   readInMetaData();
 }
+
+/// @brief create Loader object to parse target file
+/// @param targetFileName input file to parse
 Loader::Loader(string targetFileName) {
   currentProblemNumber = 0;
   this->targetFileName = targetFileName;
@@ -14,10 +17,14 @@ Loader::Loader(string targetFileName) {
   readInMetaData();
 }
 
+/// @brief getter for edge size
+/// @return
 int Loader::getEdgeSize() {
   return edgeSize;
 }
 
+/// @brief get the next problem in the file
+/// @return
 vector<int> Loader::getProblem() {
   vector<int> toReturn;
   if (myFile.is_open()) {
@@ -31,25 +38,30 @@ vector<int> Loader::getProblem() {
       lineStream >> tile;
       toReturn.push_back(tile);
     }
-
-    /*
-    for (int i = 0; i < dimension; i++) {
-      cout << toReturn[i] << " ";
-    }
-    */
   }
 
   currentProblemNumber++;
   return toReturn;
 }
 
+/// @brief check if the file has another problem
+/// @return true if there is another problem, false if not
 bool Loader::hasNextProblem() {
   if (currentProblemNumber < numberOfProblems) {
     return true;
   }
+  // close the file if there are no other problems
+  myFile.close();
   return false;
 }
 
+/// @brief getter for number of problems
+/// @return
+int Loader::getNumberOfProblems() {
+  return numberOfProblems;
+}
+
+/// @brief open file to parse
 void Loader::openFile() {
   myFile.open("./problems/" + targetFileName, ifstream::in);
   if (!myFile) {
@@ -58,6 +70,7 @@ void Loader::openFile() {
   }
 }
 
+/// @brief read in meta data: edgeSize and number of problems
 void Loader::readInMetaData() {
   if (myFile.is_open()) {
     string line;
